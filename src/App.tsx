@@ -1,24 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import CanvasDraw from 'react-canvas-draw';
 import './App.css';
 
 function App() {
+  const [dimensions, setDimensions] = React.useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  let canvasRef: CanvasDraw;
+
+  useEffect(() => {
+    function handleResize() {
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth,
+      });
+    }
+    window.addEventListener('resize', handleResize);
+  });
+
+  const setCanvasRef = (ref: CanvasDraw) => {
+    canvasRef = ref;
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button type="button" onClick={() => canvasRef.clear()}>
+        Clear the board
+      </button>
+      <CanvasDraw
+        ref={(ref) => setCanvasRef(ref!)}
+        canvasHeight={dimensions.height}
+        canvasWidth={dimensions.width}
+      />
     </div>
   );
 }
