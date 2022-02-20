@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import './App.css';
+import Header from './components/Header/Header';
 
 function App() {
   const [dimensions, setDimensions] = React.useState({
@@ -18,6 +19,9 @@ function App() {
       });
     }
     window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   });
 
   const setCanvasRef = (ref: CanvasDraw) => {
@@ -26,9 +30,7 @@ function App() {
 
   return (
     <div className="App">
-      <button type="button" onClick={() => canvasRef.clear()}>
-        Clear the board
-      </button>
+      <Header canvasRef={() => canvasRef} />
       <CanvasDraw
         ref={(ref) => setCanvasRef(ref!)}
         canvasHeight={dimensions.height}
